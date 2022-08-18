@@ -1,26 +1,40 @@
-
-# Consider dependencies only in project.
-set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
-
 # The set of languages for which implicit dependencies are needed:
 set(CMAKE_DEPENDS_LANGUAGES
+  "C"
+  )
+# The set of files for implicit dependencies of each language:
+set(CMAKE_DEPENDS_CHECK_C
+  "/home/markholum/Programming/cellmodel_new/cell-model-new/libs/glfw/src/context.c" "/home/markholum/Programming/cellmodel_new/cell-model-new/build/libs/glfw/src/CMakeFiles/glfw.dir/context.c.o"
+  "/home/markholum/Programming/cellmodel_new/cell-model-new/libs/glfw/src/egl_context.c" "/home/markholum/Programming/cellmodel_new/cell-model-new/build/libs/glfw/src/CMakeFiles/glfw.dir/egl_context.c.o"
+  "/home/markholum/Programming/cellmodel_new/cell-model-new/libs/glfw/src/glx_context.c" "/home/markholum/Programming/cellmodel_new/cell-model-new/build/libs/glfw/src/CMakeFiles/glfw.dir/glx_context.c.o"
+  "/home/markholum/Programming/cellmodel_new/cell-model-new/libs/glfw/src/init.c" "/home/markholum/Programming/cellmodel_new/cell-model-new/build/libs/glfw/src/CMakeFiles/glfw.dir/init.c.o"
+  "/home/markholum/Programming/cellmodel_new/cell-model-new/libs/glfw/src/input.c" "/home/markholum/Programming/cellmodel_new/cell-model-new/build/libs/glfw/src/CMakeFiles/glfw.dir/input.c.o"
+  "/home/markholum/Programming/cellmodel_new/cell-model-new/libs/glfw/src/linux_joystick.c" "/home/markholum/Programming/cellmodel_new/cell-model-new/build/libs/glfw/src/CMakeFiles/glfw.dir/linux_joystick.c.o"
+  "/home/markholum/Programming/cellmodel_new/cell-model-new/libs/glfw/src/monitor.c" "/home/markholum/Programming/cellmodel_new/cell-model-new/build/libs/glfw/src/CMakeFiles/glfw.dir/monitor.c.o"
+  "/home/markholum/Programming/cellmodel_new/cell-model-new/libs/glfw/src/posix_time.c" "/home/markholum/Programming/cellmodel_new/cell-model-new/build/libs/glfw/src/CMakeFiles/glfw.dir/posix_time.c.o"
+  "/home/markholum/Programming/cellmodel_new/cell-model-new/libs/glfw/src/posix_tls.c" "/home/markholum/Programming/cellmodel_new/cell-model-new/build/libs/glfw/src/CMakeFiles/glfw.dir/posix_tls.c.o"
+  "/home/markholum/Programming/cellmodel_new/cell-model-new/libs/glfw/src/vulkan.c" "/home/markholum/Programming/cellmodel_new/cell-model-new/build/libs/glfw/src/CMakeFiles/glfw.dir/vulkan.c.o"
+  "/home/markholum/Programming/cellmodel_new/cell-model-new/libs/glfw/src/window.c" "/home/markholum/Programming/cellmodel_new/cell-model-new/build/libs/glfw/src/CMakeFiles/glfw.dir/window.c.o"
+  "/home/markholum/Programming/cellmodel_new/cell-model-new/libs/glfw/src/x11_init.c" "/home/markholum/Programming/cellmodel_new/cell-model-new/build/libs/glfw/src/CMakeFiles/glfw.dir/x11_init.c.o"
+  "/home/markholum/Programming/cellmodel_new/cell-model-new/libs/glfw/src/x11_monitor.c" "/home/markholum/Programming/cellmodel_new/cell-model-new/build/libs/glfw/src/CMakeFiles/glfw.dir/x11_monitor.c.o"
+  "/home/markholum/Programming/cellmodel_new/cell-model-new/libs/glfw/src/x11_window.c" "/home/markholum/Programming/cellmodel_new/cell-model-new/build/libs/glfw/src/CMakeFiles/glfw.dir/x11_window.c.o"
+  "/home/markholum/Programming/cellmodel_new/cell-model-new/libs/glfw/src/xkb_unicode.c" "/home/markholum/Programming/cellmodel_new/cell-model-new/build/libs/glfw/src/CMakeFiles/glfw.dir/xkb_unicode.c.o"
+  )
+set(CMAKE_C_COMPILER_ID "GNU")
+
+# Preprocessor definitions for this target.
+set(CMAKE_TARGET_DEFINITIONS_C
+  "_GLFW_USE_CONFIG_H"
   )
 
-# The set of dependency files which are needed:
-set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/markholum/Programming/cellmodel-new/libs/glfw/src/cocoa_init.m" "libs/glfw/src/CMakeFiles/glfw.dir/cocoa_init.m.o" "gcc" "libs/glfw/src/CMakeFiles/glfw.dir/cocoa_init.m.o.d"
-  "/Users/markholum/Programming/cellmodel-new/libs/glfw/src/cocoa_joystick.m" "libs/glfw/src/CMakeFiles/glfw.dir/cocoa_joystick.m.o" "gcc" "libs/glfw/src/CMakeFiles/glfw.dir/cocoa_joystick.m.o.d"
-  "/Users/markholum/Programming/cellmodel-new/libs/glfw/src/cocoa_monitor.m" "libs/glfw/src/CMakeFiles/glfw.dir/cocoa_monitor.m.o" "gcc" "libs/glfw/src/CMakeFiles/glfw.dir/cocoa_monitor.m.o.d"
-  "/Users/markholum/Programming/cellmodel-new/libs/glfw/src/cocoa_time.c" "libs/glfw/src/CMakeFiles/glfw.dir/cocoa_time.c.o" "gcc" "libs/glfw/src/CMakeFiles/glfw.dir/cocoa_time.c.o.d"
-  "/Users/markholum/Programming/cellmodel-new/libs/glfw/src/cocoa_window.m" "libs/glfw/src/CMakeFiles/glfw.dir/cocoa_window.m.o" "gcc" "libs/glfw/src/CMakeFiles/glfw.dir/cocoa_window.m.o.d"
-  "/Users/markholum/Programming/cellmodel-new/libs/glfw/src/context.c" "libs/glfw/src/CMakeFiles/glfw.dir/context.c.o" "gcc" "libs/glfw/src/CMakeFiles/glfw.dir/context.c.o.d"
-  "/Users/markholum/Programming/cellmodel-new/libs/glfw/src/init.c" "libs/glfw/src/CMakeFiles/glfw.dir/init.c.o" "gcc" "libs/glfw/src/CMakeFiles/glfw.dir/init.c.o.d"
-  "/Users/markholum/Programming/cellmodel-new/libs/glfw/src/input.c" "libs/glfw/src/CMakeFiles/glfw.dir/input.c.o" "gcc" "libs/glfw/src/CMakeFiles/glfw.dir/input.c.o.d"
-  "/Users/markholum/Programming/cellmodel-new/libs/glfw/src/monitor.c" "libs/glfw/src/CMakeFiles/glfw.dir/monitor.c.o" "gcc" "libs/glfw/src/CMakeFiles/glfw.dir/monitor.c.o.d"
-  "/Users/markholum/Programming/cellmodel-new/libs/glfw/src/nsgl_context.m" "libs/glfw/src/CMakeFiles/glfw.dir/nsgl_context.m.o" "gcc" "libs/glfw/src/CMakeFiles/glfw.dir/nsgl_context.m.o.d"
-  "/Users/markholum/Programming/cellmodel-new/libs/glfw/src/posix_tls.c" "libs/glfw/src/CMakeFiles/glfw.dir/posix_tls.c.o" "gcc" "libs/glfw/src/CMakeFiles/glfw.dir/posix_tls.c.o.d"
-  "/Users/markholum/Programming/cellmodel-new/libs/glfw/src/vulkan.c" "libs/glfw/src/CMakeFiles/glfw.dir/vulkan.c.o" "gcc" "libs/glfw/src/CMakeFiles/glfw.dir/vulkan.c.o.d"
-  "/Users/markholum/Programming/cellmodel-new/libs/glfw/src/window.c" "libs/glfw/src/CMakeFiles/glfw.dir/window.c.o" "gcc" "libs/glfw/src/CMakeFiles/glfw.dir/window.c.o.d"
+# The include file search paths:
+set(CMAKE_C_TARGET_INCLUDE_PATH
+  "."
+  "../libs"
+  "../src"
+  "../libs/glfw/include"
+  "../libs/glfw/src"
+  "libs/glfw/src"
   )
 
 # Targets to which this target links.

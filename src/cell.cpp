@@ -53,9 +53,9 @@ Cell::Cell(PositionList::iterator *wall_positions, glm::mat2 gtensor, int num_po
 		walls.emplace_back(wall_positions[i], wall_positions[(i+1) % num_positions], wall_alpha);
 
 	for (size_t i = 0; i < num_positions; i++)
-		angconstraints.emplace_back(wall_positions[(i-1) % num_positions], 
+		angconstraints.emplace_back(wall_positions[(i+1) % num_positions], 
 									wall_positions[i],
-									wall_positions[(i+1) % num_positions],
+									wall_positions[(i-1) % num_positions],
 									angle, ang_alpha);
 
 }
@@ -63,12 +63,12 @@ Cell::Cell(PositionList::iterator *wall_positions, glm::mat2 gtensor, int num_po
 
 void Cell::grow(float dt) {
 
-	for (auto wall: walls) {
+	for (auto &wall: walls) {
 
 		glm::vec2 wall_vec =  wall.pos2->position - wall.pos1->position;
 		glm::vec2 wall_vec_t = (mat2{1.f} + dt*growth_tensor.tensor) * wall_vec;
 
-		wall.original_length = length(wall_vec_t);
+		wall.restlength = length(wall_vec_t);
 	}
 }
 
@@ -122,7 +122,11 @@ void Cell::run_sim_iteration_walls(float dt, float &conv_distance, float &conv_m
 
 	float lin_const_weight = 1.f; 
 
-	for (auto linconstraint: walls) {
+	for (int i = 0; i < walls.size(); i++) {
+
+		std::cout << "wall " << i << std::endl;
+
+		auto &linconstraint = walls[i];
 
 		float m1 = linconstraint.pos1->mass;
 		float m2 = linconstraint.pos2->mass;
@@ -139,19 +143,18 @@ void Cell::run_sim_iteration_walls(float dt, float &conv_distance, float &conv_m
 		if (distance < 1e-10) 
 			distance = 1e-10;
 
-		float distance2 = distance * distance;
 		auto constraintval = distance - linconstraint.restlength;
 							
 		// delC * 1/m * delCT					 
 
-		float cinnerval = 1.f/(distance*m1) + 1.f/(distance*m2);
+		float cinnerval = 1.f/m1 + 1.f/m2;
 
-		if (isnan(cinnerval)) cinnerval = 0.f;
+		//if (isnan(cinnerval)) cinnerval = 0.f;
 
 		float deltal = (-constraintval - modalph*linconstraint.lambda) / (cinnerval + modalph);
 
-		vec2 delta1 = (1.f/(distance*m1)) *diff*deltal;
-		vec2 delta2 = -delta1;
+		vec2 delta1 = (1.f/m1) * normalize(diff) * deltal;
+		vec2 delta2 = -m1*delta1/m2;
 
 		linconstraint.lambda += deltal;
 
@@ -166,7 +169,14 @@ void Cell::run_sim_iteration_walls(float dt, float &conv_distance, float &conv_m
 		linconstraint.pos2->predict += delta2*lin_const_weight;
 
 		conv_distance += length(delta1*deltal)+length(delta2*deltal);//deltax1*deltax1 + deltay1*deltay1 + deltax2*deltax2 + deltay2*deltay2;
-		conv_max = std::max({conv_max, delta1.x, delta1.y, delta2.x, delta2.y});
+		//conv_max = std::max({conv_max, delta1.x, delta1.y, delta2.x, delta2.y});
+
+		std::cout << linconstraint.pos1->predict.x << " " <<
+				  linconstraint.pos1->predict.y << " " <<
+				  linconstraint.pos1->predict.x << " " <<
+				  linconstraint.pos2->predict.x << " " <<
+				  linconstraint.pos2->predict.y << " " <<
+				  std::endl;
 
 	}
 
@@ -174,20 +184,10 @@ void Cell::run_sim_iteration_walls(float dt, float &conv_distance, float &conv_m
 
 void Cell::run_sim_iteration_angles(float dt, float &conv_distance, float &conv_max) {
 
-	float ang_const_weight = .05;
+	float ang_const_weight = 1;
 
 	for (auto &angconstraint: angconstraints) {
 
-		float x1 = angconstraint.pos1->predict.x;
-		float x2 = angconstraint.pos2->predict.x;
-		float xc = angconstraint.posc->predict.x;
-		float y1 = angconstraint.pos1->predict.y;
-		float y2 = angconstraint.pos2->predict.y;
-		float yc = angconstraint.posc->predict.y;
-		float s1x = x1 - xc;
-		float s1y = y1 - yc;
-		float s2x = x2 - xc;
-		float s2y = y2 - yc;
 		float m1 = angconstraint.pos1->mass;
 		float m2 = angconstraint.pos2->mass;
 		float mc = angconstraint.posc->mass;
@@ -196,13 +196,20 @@ void Cell::run_sim_iteration_angles(float dt, float &conv_distance, float &conv_
 		vec2 posC = angconstraint.posc->predict;
 		vec2 s1 = pos1 - posC;
 		vec2 s2 = pos2 - posC;
-
 		float modalph = angconstraint.alpha/(dt*dt);
+
+		static int x = 0;
+
+		x++;
 
 		float s1ds2 = dot(s1,s2);//s1x*s2x + s1y*s2y;
 		float s1xs2 = crossZ(s1,s2);//s1x*s2y - s1y*s2x;
 
 		float constraintval = atan2(s1xs2,s1ds2) - angconstraint.theta0;
+
+		std::cout << angconstraint.theta0 << " " << s1xs2 << " " << s1ds2 << std::endl; 
+
+		std::cout << "constraintval " << constraintval << std::endl;
 		vec2 dot_cross(s1ds2,s1xs2);
 
 		float datan2 = 1.f / (dot(dot_cross,dot_cross));//1.f / (s1ds2*s1ds2 + s1xs2*s1xs2); 
@@ -213,8 +220,8 @@ void Cell::run_sim_iteration_angles(float dt, float &conv_distance, float &conv_
 		float delcy1 = datan2 * (-(s1ds2*s2.x) - (s1xs2*s2.y));
 		float delcy2 = datan2 * ((s1ds2*s1.x) - (s1xs2*s1.y));
 		
-		float delcxc = -delcx1-delcx2;
-		float delcyc = -delcy1-delcy2;
+		float delcxc = (delcx1 - delcx2);
+		float delcyc = (delcy1 - delcy2);
 	//			vec2 delc1(crossZ(dot_cross,s2),-dot(dot_cross,s2));
 	//			vec2 delc2(-dot(dot_cross,s1),crossZ(dot_cross,s1));
 	//			vec2 delcc(delc1.x)
@@ -273,16 +280,16 @@ void Cell::run_sim_iteration_angles(float dt, float &conv_distance, float &conv_
 				deltayc = 0;
 
 
-		angconstraint.pos1->predict.x += deltax1*ang_const_weight;
-		angconstraint.pos1->predict.y += deltay1*ang_const_weight;
-		angconstraint.pos2->predict.x += deltax2*ang_const_weight;
-		angconstraint.pos2->predict.y += deltay2*ang_const_weight;
-		angconstraint.posc->predict.x += deltaxc*ang_const_weight;
-		angconstraint.posc->predict.y += deltayc*ang_const_weight;
+		// angconstraint.pos1->predict.x += deltax1*ang_const_weight;
+		// angconstraint.pos1->predict.y += deltay1*ang_const_weight;
+		// angconstraint.pos2->predict.x += deltax2*ang_const_weight;
+		// angconstraint.pos2->predict.y += deltay2*ang_const_weight;
+		// angconstraint.posc->predict.x += deltaxc*ang_const_weight;
+		// angconstraint.posc->predict.y += deltayc*ang_const_weight;
 
 
 		conv_distance += sqrt(deltax1*deltax1 + deltay1*deltay1) + sqrt(deltax2*deltax2 + deltay2*deltay2) + sqrt(deltaxc*deltaxc + deltayc*deltayc);
-		conv_max = std::max({conv_max, deltax1, deltay1, deltax2, deltay2, deltaxc, deltayc});
+		//conv_max = std::max({conv_max, deltax1, deltay1, deltax2, deltay2, deltaxc, deltayc});
 
 	}
 

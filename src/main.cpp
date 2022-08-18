@@ -52,7 +52,7 @@ int main(void)
   float linalpha = .000000001f;
   float angalpha = .00000001f; 
 
-  Sim sim = Sim(glm::vec2{-5.0f, 0}, 1.0f, 1, 1, linalpha, angalpha);
+  Sim sim = Sim(glm::vec2{-5.0f, 0}, 1.0f, 3, 3, linalpha, angalpha);
 
   float sub_step = 0.05;
   glClearColor(0.f, 0.f, 0.f, 0.f);

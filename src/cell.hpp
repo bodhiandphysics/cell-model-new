@@ -8,6 +8,7 @@ struct GTensor {
 	glm::mat2 tensor{0};
 
 	void rotate(float theta); 
+	
 };
 
 struct Cell {
